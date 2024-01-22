@@ -1,0 +1,1 @@
+The purpose of this repository is primarily to make certain files (such as Jupyter notebooks)readily available to the public with hyperlinks from the Auckland Research website (www.aucklandresearch.com).
