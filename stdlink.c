@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h> // Used for calloc() calls.
 #include <stdbool.h>
+#include <time.h>
 
 
 typedef struct node {   // This struct, tagged 'node', has three members:
@@ -29,6 +30,7 @@ Node *delete_tail(Node *head);
 Node *delete_first_match_value(Node *head, int delete_value, bool *was_deleted);
 Node *delete_first_match_alpha(Node *head, char delete_alpha, bool *was_deleted);
 Node *delete_first_match_value_and_alpha(Node *head, int delete_value, char delete_alpha, bool *was_deleted);
+Node *delete_all_match_value(Node *head, int delete_value, int *num_deleted);
 
 // Length, Search, Count, and Replace functions.
 int length(Node *node);
@@ -42,101 +44,120 @@ void replace_matches_alpha(Node *node, char find_alpha, char replace_alpha);
 
 int main(void)
 {
-    Node *list1_head = NULL; // Declare an empty list.
+  Node *list1_head = NULL; // Declare an empty list.
 
-    list1_head = insert_full_head(list1_head, 1, 'a');
-    list1_head = insert_full_head(list1_head, 3, 'b');
-    list1_head = insert_full_head(list1_head, 5, 'c');
-    list1_head = insert_full_head(list1_head, 0, 'd');
-    list1_head = insert_full_head(list1_head, 9, '.');
-    list1_head = insert_at_tail(list1_head, 2, 'x');
-    list1_head = insert_at_tail(list1_head, 4, 'y');
-    list1_head = insert_at_tail(list1_head, 6, 'z');
+  list1_head = insert_full_head(list1_head, 1, 'a');
+  list1_head = insert_full_head(list1_head, 3, 'b');
+  list1_head = insert_full_head(list1_head, 5, 'c');
+  list1_head = insert_full_head(list1_head, 0, 'd');
+  list1_head = insert_full_head(list1_head, 9, '.');
+  list1_head = insert_at_tail(list1_head, 2, 'x');
+  list1_head = insert_at_tail(list1_head, 4, 'y');
+  list1_head = insert_at_tail(list1_head, 6, 'z');
     
-    print_list(list1_head);
-    print_list_value(list1_head);
-    print_list_alpha(list1_head);
-    print_list_next_pointer(list1_head);
-    print_list_full(list1_head);
-    print_list_node_memory_addresses_and_next_pointer(list1_head);
+  print_list(list1_head);
+  print_list_value(list1_head);
+  print_list_alpha(list1_head);
+  print_list_next_pointer(list1_head);
+  print_list_full(list1_head);
+  print_list_node_memory_addresses_and_next_pointer(list1_head);
     
-    list1_head = delete_head(list1_head);
+  list1_head = delete_head(list1_head);
 
-    printf("Full list after deleting the head:\n");
-    print_list_full(list1_head);
+  printf("Full list after deleting the head:\n");
+  print_list_full(list1_head);
 
-    list1_head = delete_tail(list1_head);
+  list1_head = delete_tail(list1_head);
 
-    printf("Full list after deleting the tail:\n");
-    print_list_full(list1_head);
+  printf("Full list after deleting the tail:\n");
+  print_list_full(list1_head);
 
-    printf("Length of list: %d\n\n", length(list1_head));
+  printf("Length of list: %d\n\n", length(list1_head));
 
-    if (is_member_value(list1_head, 3))
-        printf("3 found in list.\n");
-    else
-        printf("3 NOT found in list.\n");
+  if (is_member_value(list1_head, 3))
+      printf("3 found in list.\n");
+  else
+      printf("3 NOT found in list.\n");
 
-    if (is_member_value(list1_head, 22))
-        printf("22 found in list.\n");
-    else
-        printf("22 NOT found in list.\n\n");
+  if (is_member_value(list1_head, 22))
+      printf("22 found in list.\n");
+  else
+      printf("22 NOT found in list.\n\n");
     
-    if (is_member_alpha(list1_head, 'a'))
-        printf("a found in list.\n");
-    else
-        printf("a NOT found in list.\n");
+  if (is_member_alpha(list1_head, 'a'))
+      printf("a found in list.\n");
+  else
+      printf("a NOT found in list.\n");
 
-    if (is_member_alpha(list1_head, 'j'))
-        printf("j found in list.\n");
-    else
-        printf("j NOT found in list.\n\n");
+  if (is_member_alpha(list1_head, 'j'))
+      printf("j found in list.\n");
+  else
+      printf("j NOT found in list.\n\n");
 
-    printf("The value 3 was found %d time(s).\n\n", count_matches_value(list1_head, 3));
+  printf("The value 3 was found %d time(s).\n\n", count_matches_value(list1_head, 3));
 
-    printf("The character b was found %d time(s).\n\n", count_matches_alpha(list1_head, 'b'));
+  printf("The character b was found %d time(s).\n\n", count_matches_alpha(list1_head, 'b'));
 
-    replace_matches_value(list1_head, 3, 30);
-        printf("List after replacing 3 with 30.\n");
-        print_list(list1_head);
-
-    replace_matches_alpha(list1_head, 'c', 'G');
-        printf("List after replacing c with G.\n");
-        print_list(list1_head);
-
-    bool deleted_value;
-    list1_head = delete_first_match_value(list1_head, 30, &deleted_value); // The memory address of the
-    if (deleted_value)                                              // empty boolean 'deleted' is
-        printf("A node with value 30 was deleted.\n\n");           // passed to the delete...
-    else                                                      // and is returned set to true
-        printf("A node with value 30 was NOT deleted.\n\n");       // or false.
-
-    printf("List after attempting to delete 30...\n\n");
+  replace_matches_value(list1_head, 3, 30);
+    printf("List after replacing 3 with 30.\n");
     print_list(list1_head);
 
-    bool deleted_alpha;
-    list1_head = delete_first_match_alpha(list1_head, 'G', &deleted_alpha); // The memory address of the
-    if (deleted_alpha)                                              // empty boolean 'deleted' is
-        printf("A node with character G was deleted.\n\n");           // passed to the delete...
-    else                                                      // and is returned set to true
-        printf("A node with character G was NOT deleted.\n\n");       // or false.
-
-    printf("List after attempting to delete G...\n\n");
+  replace_matches_alpha(list1_head, 'c', 'G');
+    printf("List after replacing c with G.\n");
     print_list(list1_head);
 
-    bool deleted_value_and_alpha;
-    list1_head = delete_first_match_value_and_alpha(list1_head, 2, 'x', &deleted_value); // The memory address of the
-    if (deleted_value_and_alpha)                                              // empty boolean 'deleted' is
-        printf("A node with value and character of (2, x) was deleted.\n\n");           // passed to the delete...
-    else                                                      // and is returned set to true
-        printf("A node with value and character of (2, x) was NOT deleted.\n\n");       // or false.
+  bool deleted_value;
+  list1_head = delete_first_match_value(list1_head, 30, &deleted_value); // The memory address of the
+  if (deleted_value)                                              // empty boolean 'deleted' is
+    printf("A node with value 30 was deleted.\n\n");           // passed to the delete...
+  else                                                      // and is returned set to true
+    printf("A node with value 30 was NOT deleted.\n\n");       // or false.
 
-    printf("List after attempting to delete (2, x)...\n\n");
-    print_list(list1_head);
+  printf("List after attempting to delete 30...\n\n");
+  print_list(list1_head);
 
+  bool deleted_alpha;
+  list1_head = delete_first_match_alpha(list1_head, 'G', &deleted_alpha); // The memory address of the
+  if (deleted_alpha)                                              // empty boolean 'deleted' is
+    printf("A node with character G was deleted.\n\n");           // passed to the delete...
+  else                                                      // and is returned set to true
+    printf("A node with character G was NOT deleted.\n\n");       // or false.
 
+  printf("List after attempting to delete G...\n\n");
+  print_list(list1_head);
 
-    return 0;
+  bool deleted_value_and_alpha;
+  list1_head = delete_first_match_value_and_alpha(list1_head, 2, 'x', &deleted_value); // The memory address of the
+  if (deleted_value_and_alpha)                                              // empty boolean 'deleted' is
+    printf("A node with value and character of (2, x) was deleted.\n\n");           // passed to the delete...
+  else                                                      // and is returned set to true
+    printf("A node with value and character of (2, x) was NOT deleted.\n\n");       // or false.
+
+  printf("List after attempting to delete (2, x)...\n\n");
+  print_list(list1_head);
+
+  int num_deleted = 0;
+  list1_head = delete_all_match_value(list1_head, 30, &num_deleted);
+  printf("\nList after deleting all 30s.\n");
+  print_list(list1_head);
+  printf("Number of deleted 30s: %d\n", num_deleted);
+
+  // Test performance.
+  // Create two large lists:
+  Node *list2 = NULL, *list3 = NULL;  // Declare two empty lists.
+  for (int i = 0; i < 50000; i++)     // Insert 50,000 nodes...
+    list2 = insert_full_head(list2, i % 10, 'a');
+  for (int i = 0; i < 100000; i++)
+    list3 = insert_full_head(list3, i % 10, 'b');  
+
+  clock_t tic, toc;
+  tic = clock();
+  list2 = delete_all_match_value(list2, 4, &num_deleted);
+  toc = clock();
+  printf("\ndelete_all_match_value in 50,000 nodes: %fs\n", (double)(toc - tic) / CLOCKS_PER_SEC);
+  printf("elements deleted: %d\n", num_deleted);
+
+  return 0;
 }
 
 void print_list(Node *head)
@@ -418,6 +439,41 @@ Node *delete_first_match_value_and_alpha(Node *head, int delete_value, char dele
 
   *was_deleted = false;
   return head;
+}
+
+Node *delete_all_match_value(Node *head, int delete_value, int *num_deleted)
+{
+  *num_deleted = 0; // Why does *num_deleted continue to be referenced with an *
+                    // but, say head, which was also passed with an * is not?
+  if (head == NULL) return NULL; // If list is empty, return NULL.
+
+  Node *current, *temp, *new_head;
+  current = head;
+  *num_deleted = 0; // Pass by reference (using the memory address);
+
+  while (current->value == delete_value)
+  {
+    temp = current;
+    current = current->next;
+    free(temp);
+    *num_deleted = *num_deleted + 1;
+
+    if (current == NULL) return NULL;
+  }
+  new_head = current;
+
+  while (current->next != NULL)
+  {
+    if (current->next->value == delete_value)
+    {
+      temp = current->next;
+      current->next = current->next->next;
+      free(temp);
+      *num_deleted = *num_deleted + 1;
+    }
+    else current = current->next;
+  }
+return new_head;
 }
 
 int length(Node *node)
