@@ -31,6 +31,8 @@ Node *delete_first_match_value(Node *head, int delete_value, bool *was_deleted);
 Node *delete_first_match_alpha(Node *head, char delete_alpha, bool *was_deleted);
 Node *delete_first_match_value_and_alpha(Node *head, int delete_value, char delete_alpha, bool *was_deleted);
 Node *delete_all_match_value(Node *head, int delete_value, int *num_deleted);
+Node *delete_all_match_alpha(Node *head, char delete_alpha, int *num_deleted);
+Node *delete_all_match_value_and_alpha(Node *head, int delete_value, char delete_alpha, int *num_deleted);
 
 // Length, Search, Count, and Replace functions.
 int length(Node *node);
@@ -142,6 +144,21 @@ int main(void)
   print_list(list1_head);
   printf("Number of deleted 30s: %d\n", num_deleted);
 
+  list1_head = delete_all_match_alpha(list1_head, 'a', &num_deleted);
+  printf("\nList after deleting all a characters.\n");
+  print_list(list1_head);
+  printf("Number of deleted a characters: %d\n", num_deleted);
+
+  list1_head = delete_all_match_value_and_alpha(list1_head, 4, 'y', &num_deleted);
+  printf("\nList after deleting all nodes with 4 and y.\n");
+  print_list(list1_head);
+  printf("Number of deleted nodes with 4 and y: %d\n", num_deleted);
+
+  list1_head = delete_all_match_value_and_alpha(list1_head, 0, 'd', &num_deleted);
+  printf("\nList after deleting all nodes with 0 and d.\n");
+  print_list(list1_head);
+  printf("Number of deleted nodes with 0 and d: %d\n", num_deleted);
+
   // Test performance.
   // Create two large lists:
   Node *list2 = NULL, *list3 = NULL;  // Declare two empty lists.
@@ -160,6 +177,7 @@ int main(void)
   return 0;
 }
 
+// Print functions:
 void print_list(Node *head)
 {
   Node *current;
@@ -257,6 +275,7 @@ void print_list_node_memory_addresses_and_next_pointer(Node *head)
   printf("\n");
 }
 
+// Insert Functions:
 Node *insert_full_head(Node *head, int new_value, char new_alpha)
 {
   Node *new_node = calloc(1, sizeof(Node));
@@ -289,6 +308,7 @@ Node *insert_at_tail(Node *head, int new_value, char new_alpha)
   }
 }
 
+// Delete Functions:
 Node *delete_head(Node *head)
 {
   if (head == NULL) return NULL;
@@ -476,6 +496,77 @@ Node *delete_all_match_value(Node *head, int delete_value, int *num_deleted)
 return new_head;
 }
 
+Node *delete_all_match_alpha(Node *head, char delete_alpha, int *num_deleted)
+{
+  *num_deleted = 0; 
+
+  if (head == NULL) return NULL; // If list is empty, return NULL.
+
+  Node *current, *temp, *new_head;
+  current = head;
+  *num_deleted = 0;
+
+  while (current->alpha == delete_alpha)
+  {
+    temp = current;
+    current = current->next;
+    free(temp);
+    *num_deleted = *num_deleted + 1;
+
+    if (current == NULL) return NULL;
+  }
+  new_head = current;
+
+  while (current->next != NULL)
+  {
+    if (current->next->alpha == delete_alpha)
+    {
+      temp = current->next;
+      current->next = current->next->next;
+      free(temp);
+      *num_deleted = *num_deleted + 1;
+    }
+    else current = current->next;
+  }
+return new_head;
+}
+
+Node *delete_all_match_value_and_alpha(Node *head, int delete_value, char delete_alpha, int *num_deleted)
+{
+  *num_deleted = 0; 
+
+  if (head == NULL) return NULL; // If list is empty, return NULL.
+
+  Node *current, *temp, *new_head;
+  current = head;
+  *num_deleted = 0;
+
+  while ((current->value == delete_value) && (current->alpha == delete_alpha))
+  {
+    temp = current;
+    current = current->next;
+    free(temp);
+    *num_deleted = *num_deleted + 1;
+
+    if (current == NULL) return NULL;
+  }
+  new_head = current;
+
+  while (current->next != NULL)
+  {
+    if ((current->next->value == delete_value) && (current->next->alpha == delete_alpha))
+    {
+      temp = current->next;
+      current->next = current->next->next;
+      free(temp);
+      *num_deleted = *num_deleted + 1;
+    }
+    else current = current->next;
+  }
+return new_head;
+}
+
+// Length, Test for Member, Count Matching Members, etc...
 int length(Node *node)
 {
   if (node == NULL) return 0;
