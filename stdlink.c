@@ -174,6 +174,9 @@ int main(void)
   printf("\ndelete_all_match_value in 50,000 nodes: %fs\n", (double)(toc - tic) / CLOCKS_PER_SEC);
   printf("elements deleted: %d\n", num_deleted);
 
+  // Test change.
+  int x = 0;
+
   return 0;
 }
 
