@@ -2,46 +2,40 @@
 #include <stdlib.h>
 #include <string.h>
 
-int compare_int(const void *x_void, const void *y_void)
-{
-    int x = *(int *)x_void; // The (int *)x_void phrase casts the void 
-                            // pointer as an integer pointer (so the integer 
-                            // values can be compared). The the * in front
-                            // of that phrase de-references the integer
-                            // pointer to its integer value.
-                            // See Kevin's "Introduction to Pointers" video.)
-                            // Note: The complexity of this syntax is the
-                            // price of making the compare() function as
-                            // flexible as possible in the type of data it
-                            // will handle.
-    int y = *(int *)y_void; // Do the same for y.
-    return x - y;
-}
+//int compare_int(const void *x_void, const void *y_void)
+//{
+//    int x = *(int *)x_void; // The (int *)x_void phrase casts the void 
+//                            // pointer as an integer pointer (so the integer 
+//                            // values can be compared). The the * in front
+//                            // of that phrase de-references the integer
+//                            // pointer to its integer value.
+//                            // See Kevin's "Introduction to Pointers" video.)
+//                            // Note: The complexity of this syntax is the
+//                            // price of making the compare() function as
+//                            // flexible as possible in the type of data it
+//                           // will handle.
+//    int y = *(int *)y_void; // Do the same for y.
+//    return x - y;
+//}
+//
+//int compare_char(const void *x_void, const void *y_void)
+//{
+//    int x = *(char *)x_void; // The (int *)x_void phrase casts the void 
+//                            // pointer as an integer pointer (so the integer 
+//                            // values can be compared). The the * in front
+//                            // of that phrase de-references the integer
+//                            // pointer to its integer value.
+//                            // See Kevin's "Introduction to Pointers" video.)
+//                            // Note: The complexity of this syntax is the
+//                            // price of making the compare() function as
+//                            // flexible as possible in the type of data it
+//                            // will handle.
+//    int y = *(char *)y_void; // Do the same for y.
+//    return x - y;
+//}
 
-int compare_char(const void *x_void, const void *y_void)
-{
-    int x = *(char *)x_void; // The (int *)x_void phrase casts the void 
-                            // pointer as an integer pointer (so the integer 
-                            // values can be compared). The the * in front
-                            // of that phrase de-references the integer
-                            // pointer to its integer value.
-                            // See Kevin's "Introduction to Pointers" video.)
-                            // Note: The complexity of this syntax is the
-                            // price of making the compare() function as
-                            // flexible as possible in the type of data it
-                            // will handle.
-    int y = *(char *)y_void; // Do the same for y.
-    return x - y;
-}
-
-static int myCompare(const void* a, const void* b)
-{
-   return strcmp(*(const char**)a, *(const char**)b);
-}
-void sort_words(const char* arr[], int n)
-{
-    qsort(arr, n, sizeof(const char*), myCompare);
-}
+static int myCompare(const void* a, const void* b);
+void sort_words(const char* arr[], int n);
 
 
 int main()
@@ -81,8 +75,20 @@ int main()
     for (int i = 0; i < n; i++)
         printf("%d: %s \n", i, arr[i]);
 
-
     return 0;
+}
+
+
+// This short function does the comparison of two values:
+static int myCompare(const void* a, const void* b)
+{
+   return strcmp(*(const char**)a, *(const char**)b);
+}
+
+// This short function
+void sort_words(const char* arr[], int n)
+{
+    qsort(arr, n, sizeof(const char*), myCompare);
 }
 
 // The qsort() function is relatively simple, except its 4th argument depends
