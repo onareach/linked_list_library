@@ -1,1 +1,1 @@
-The purpose of this repository is to make linked list library files written by David Long available to the public.
+The purpose of this repository is to make a linked list library written by David Long publicly available.
