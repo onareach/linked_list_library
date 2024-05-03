@@ -1,14 +1,16 @@
 /** 
  * Alternate file using the same linked list library (llist_int.h)
+ * This file uses comment markers that Doxygen can interpret.
  * 
  * @file other.c
  * @author David Long
  * @date Friday, April 19, 2024
  * 
- *  The purpose of this file was simply to include the same
- *  linked list library for list of integer values (llist_int.h)
- *  that is used by another file (main.c) to illustrate the
- *  the principles of modular development
+ * The purpose of this file was simply to include the same
+ * linked list library for a list of integer values (llist_int.h)
+ * that is used by another file (main.c) to illustrate the
+ * a principle of modular development – that *multiple* files
+ * can include and call functions in *one* common library file. 
  */
  
 #include <stdio.h>
